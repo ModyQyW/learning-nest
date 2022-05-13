@@ -1,0 +1,31 @@
+{
+  "extends": "./node_modules/@modyqyw/fabric/tsconfig.base.json",
+  "compilerOptions": {
+    "strictPropertyInitialization": false,
+    "baseUrl": ".",
+    "module": "CommonJS",
+    "types": ["@types/jest", "type-fest"],
+    "preserveValueImports": false,
+    "target": "ES2021",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "incremental": true
+  },
+  "include": [
+    "**/.*.js",
+    "**/.*.cjs",
+    "**/.*.mjs",
+    "**/.*.ts",
+    "**/.*.cts",
+    "**/.*.mts",
+    "**/*.js",
+    "**/*.cjs",
+    "**/*.mjs",
+    "**/*.jsx",
+    "**/*.ts",
+    "**/*.cts",
+    "**/*.mts",
+    "**/*.tsx"
+  ],
+  "exclude": ["node_modules", "dist*"]
+}
