@@ -4,6 +4,9 @@
     "strictPropertyInitialization": false,
     "baseUrl": ".",
     "module": "CommonJS",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "types": ["@types/jest", "type-fest"],
     "preserveValueImports": false,
     "target": "ES2021",
