@@ -8,6 +8,7 @@
       "@/*": ["./src/*"]
     },
     "types": ["@types/jest", "type-fest"],
+    "importsNotUsedAsValues": "remove",
     "preserveValueImports": false,
     "target": "ES2021",
     "emitDecoratorMetadata": true,
