@@ -1,6 +1,6 @@
-import { IsString } from 'class-validator';
+import { IsMongoId } from 'class-validator';
 
 export class IdsDto {
-  @IsString({ each: true })
-  ids: string[];
+  @IsMongoId({ each: true })
+  readonly ids: string[];
 }
