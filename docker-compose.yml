@@ -2,14 +2,14 @@ version: '3'
 
 # services:
 #   mongo:
-#     image: mongo:5
+#     image: mongo:5.0
 #     restart: always
 #     ports:
 #       - 27018:27017
 #     environment:
 #       MONGODB_DATABASE: db
 #   test-mongo:
-#     image: mongo:5
+#     image: mongo:5.0
 #     restart: always
 #     ports:
 #       - 27019:27017
@@ -21,7 +21,7 @@ services:
   # here, we steup the hostname ports, and startup command
   mongo1:
     hostname: mongo1
-    image: mongo:5
+    image: mongo:5.0
     expose:
       - 27017
     ports:
@@ -34,7 +34,7 @@ services:
     entrypoint: ['/usr/bin/mongod', '--replSet', 'rs', '--bind_ip_all']
   mongo2:
     hostname: mongo2
-    image: mongo:5
+    image: mongo:5.0
     expose:
       - 27017
     ports:
@@ -47,7 +47,7 @@ services:
     entrypoint: ['/usr/bin/mongod', '--replSet', 'rs', '--bind_ip_all']
   mongo3:
     hostname: mongo3
-    image: mongo:5
+    image: mongo:5.0
     expose:
       - 27017
     ports:
@@ -63,7 +63,7 @@ services:
   # this runs the `rs.initiate` command to intialize
   # the replica set and connect the three servers to each other
   mongoinit:
-    image: mongo:5
+    image: mongo:5.0
     # this container will exit after executing the command
     restart: 'no'
     depends_on:
