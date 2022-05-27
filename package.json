@@ -10,20 +10,20 @@
     "commit": "git-cz",
     "predev": "rimraf dist",
     "dev": "nest start --watch",
-    "postinstall": "docker-compose up -d db",
+    "postinstall": "docker-compose up -d",
     "lint": "eslint . --ext=.js,.cjs,.mjs.jsx,.ts,.cts,.mts,.tsx --fix --ignore-path=.gitignore && tsc --noEmit",
     "prepare": "is-ci || husky install",
     "start": "nest start",
     "start:debug": "nest start --debug --watch",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/src/main",
+    "pretest": "docker-compose up -d test-mongo",
     "test": "jest",
-    "test:cov": "jest --coverage",
+    "posttest": "docker-compose stop test-db && docker-compose rm -f test-db",
+    "test:cov": "pnpm run test --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "pretest:e2e": "docker-compose up -d test-db",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "posttest:e2e": "docker-compose stop test-db && docker-compose rm -f test-db",
-    "test:watch": "jest --watch"
+    "test:e2e": "pnpm run test --config ./test/jest-e2e.json",
+    "test:watch": "pnpm run test --watch"
   },
   "config": {
     "commitizen": {

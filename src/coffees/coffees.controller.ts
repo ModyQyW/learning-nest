@@ -1,46 +1,101 @@
 import { Controller, Get, Param, Patch, Body, Delete, Post, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { IdDto, IdsDto, PaginationDto } from '@/common';
 import { CoffeesService } from './coffees.service';
-import { CreateCoffeeDto, UpdateCoffeeDto } from './dto';
-import type { PaginationDto } from '@/common';
+import { CreateCoffeeDto, UpdateCoffeeDto, UpdateBulkCoffeeDto } from './dto';
+import { Coffee } from './entities';
 
 @ApiTags('coffees')
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeeService: CoffeesService) {}
 
+  /**
+   * Read
+   */
+
   @Get()
+  @ApiOkResponse({
+    description: 'Successfully fetch bulk coffees. <br />成功获取多个咖啡。',
+    type: Coffee,
+    isArray: true,
+  })
   findAll(@Query() paginationDto: PaginationDto) {
     return this.coffeeService.findAll(paginationDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.coffeeService.findOne(id);
+  @Get('/bulk')
+  @ApiOkResponse({
+    description: 'Successfully fetch specific coffees. <br />成功获取指定的多个咖啡。',
+    type: Coffee,
+    isArray: true,
+  })
+  findByIds(@Query() idsDto: IdsDto) {
+    return this.coffeeService.findByIds(idsDto);
   }
+
+  @Get('/:id')
+  @ApiOkResponse({
+    description: 'Successfully fetch a coffee. <br />成功获取一个咖啡。',
+    type: Coffee,
+  })
+  findById(@Param() idDto: IdDto) {
+    return this.coffeeService.findById(idDto);
+  }
+
+  /**
+   * Create
+   */
 
   @Post()
   create(@Body() createCoffeeDto: CreateCoffeeDto) {
     return this.coffeeService.create(createCoffeeDto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
-    return this.coffeeService.update(id, updateCoffeeDto);
+  @Post('/bulk')
+  createBulk(@Body() createCoffeeDtos: CreateCoffeeDto[]) {
+    return this.coffeeService.create(createCoffeeDtos);
   }
 
-  @Post(':id/patch')
-  updateWithPost(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
-    return this.update(id, updateCoffeeDto);
+  /**
+   * Update
+   */
+
+  @Patch('/bulk')
+  updateBulk(@Body() UpdateBulkCoffeeDtos: UpdateBulkCoffeeDto[]) {
+    return this.coffeeService.updateBulk(UpdateBulkCoffeeDtos);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.coffeeService.remove(id);
+  @Patch('/:id')
+  update(@Param() idDto: IdDto, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+    return this.coffeeService.update(idDto, updateCoffeeDto);
   }
 
-  @Post(':id/delete')
-  removeWithPost(@Param('id') id: string) {
-    return this.remove(id);
+  @Post('/patch/bulk')
+  updateBulkWithPost(@Body() UpdateBulkCoffeeDtos: UpdateBulkCoffeeDto[]) {
+    return this.updateBulk(UpdateBulkCoffeeDtos);
   }
+
+  @Post('/:id/patch')
+  updateWithPost(@Param() idDto: IdDto, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+    return this.update(idDto, updateCoffeeDto);
+  }
+
+  /**
+   * Delete
+   */
+
+  @Delete('/:id')
+  remove(@Param() idDto: IdDto) {
+    return this.coffeeService.remove(idDto);
+  }
+
+  @Post('/:id/delete')
+  removeWithPost(@Param() idDto: IdDto) {
+    return this.remove(idDto);
+  }
+
+  /**
+   * Other actions
+   */
 }

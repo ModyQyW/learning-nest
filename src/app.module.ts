@@ -3,7 +3,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CoffeesModule } from './coffees';
 
 @Module({
-  imports: [CoffeesModule, MongooseModule.forRoot('mongodb://localhost:27017/db')],
+  imports: [
+    CoffeesModule,
+    MongooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: 'mongodb://0.0.0.0:27018,0.0.0.0:27019,0.0.0.0:27020/db?replicaSet=rs',
+      }),
+    }),
+  ],
   controllers: [],
   providers: [],
 })
