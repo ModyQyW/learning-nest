@@ -7,7 +7,7 @@ import { CoffeesModule } from './coffees';
     CoffeesModule,
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        uri: 'mongodb://0.0.0.0:27018,0.0.0.0:27019,0.0.0.0:27020/db?replicaSet=rs',
+        uri: 'mongodb://root:mongodb@localhost:27017,localhost:27018,localhost:27019/db?authSource=admin&replicaSet=replicaset',
       }),
     }),
   ],
