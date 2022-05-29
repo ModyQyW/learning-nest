@@ -1,5 +1,5 @@
-version: '3'
-
+# version: '3'
+#
 # services:
 #   mongo:
 #     image: mongo:5.0
@@ -16,84 +16,50 @@ version: '3'
 #     environment:
 #       MONGODB_DATABASE: test-db
 
+version: '2'
+
 services:
-  # first, we define the three mongo servers that will act as replicas
-  # here, we steup the hostname ports, and startup command
-  mongo1:
-    hostname: mongo1
-    image: mongo:5.0
-    expose:
-      - 27017
+  mongodb-primary:
+    image: bitnami/mongodb:5.0
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_PASSWORD=mongodb
+      - MONGODB_REPLICA_SET_KEY=replicasetkey
+    volumes:
+      - ~/bitnami/mongodb:/bitnami/mongodb
+
+  mongodb-secondary:
+    image: bitnami/mongodb:5.0
+    restart: always
+    depends_on:
+      - mongodb-primary
     ports:
       - 27018:27017
-    volumes:
-      - ~/rs/mongo1:/data/db
-    restart: always
     environment:
-      MONGODB_DATABASE: db
-    entrypoint: ['/usr/bin/mongod', '--replSet', 'rs', '--bind_ip_all']
-  mongo2:
-    hostname: mongo2
-    image: mongo:5.0
-    expose:
-      - 27017
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-secondary
+      - MONGODB_REPLICA_SET_MODE=secondary
+      - MONGODB_INITIAL_PRIMARY_HOST=mongodb-primary
+      - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=mongodb
+      - MONGODB_REPLICA_SET_KEY=replicasetkey
+
+  mongodb-arbiter:
+    image: bitnami/mongodb:5.0
+    restart: always
+    depends_on:
+      - mongodb-primary
     ports:
       - 27019:27017
-    volumes:
-      - ~/rs/mongo2:/data/db
-    restart: always
     environment:
-      MONGODB_DATABASE: db
-    entrypoint: ['/usr/bin/mongod', '--replSet', 'rs', '--bind_ip_all']
-  mongo3:
-    hostname: mongo3
-    image: mongo:5.0
-    expose:
-      - 27017
-    ports:
-      - 27020:27017
-    volumes:
-      - ~/rs/mongo3:/data/db
-    restart: always
-    environment:
-      MONGODB_DATABASE: db
-    entrypoint: ['/usr/bin/mongod', '--replSet', 'rs', '--bind_ip_all']
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-arbiter
+      - MONGODB_REPLICA_SET_MODE=arbiter
+      - MONGODB_INITIAL_PRIMARY_HOST=mongodb-primary
+      - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=mongodb
+      - MONGODB_REPLICA_SET_KEY=replicasetkey
 
-  # finally, we can define the initialization server
-  # this runs the `rs.initiate` command to intialize
-  # the replica set and connect the three servers to each other
-  mongoinit:
-    image: mongo:5.0
-    # this container will exit after executing the command
-    restart: 'no'
-    depends_on:
-      - mongo1
-      - mongo2
-      - mongo3
-    command: >
-      mongo --host mongo1:27017 --eval
-      '
-      db = (new Mongo("host.docker.internal:27017")).getDB("db");
-      config = {
-        "_id" : "rs",
-        "members" : [
-          {
-            "_id" : 0,
-            "host" : "mongo1:27017",
-            "priority": 3
-          },
-          {
-            "_id" : 1,
-            "host" : "mongo2:27017",
-            "priority": 2
-          },
-          {
-            "_id" : 2,
-            "host" : "mongo3:27017",
-            "priority": 1
-          }
-        ]
-      };
-      rs.initiate(config, { force: true });
-      rs.secondaryOk();
-      '
+volumes:
+  mongodb_master_data:
+    driver: local
