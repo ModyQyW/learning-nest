@@ -59,7 +59,3 @@ services:
       - MONGODB_INITIAL_PRIMARY_HOST=mongodb-primary
       - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=mongodb
       - MONGODB_REPLICA_SET_KEY=replicasetkey
-
-volumes:
-  mongodb_master_data:
-    driver: local
