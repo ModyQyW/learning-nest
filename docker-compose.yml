@@ -29,6 +29,7 @@ services:
       - MONGODB_REPLICA_SET_MODE=primary
       - MONGODB_ROOT_PASSWORD=mongodb
       - MONGODB_REPLICA_SET_KEY=replicasetkey
+      - MONGODB_ENABLE_IPV6=true
     volumes:
       - ~/bitnami/mongodb:/bitnami/mongodb
 
@@ -45,6 +46,7 @@ services:
       - MONGODB_INITIAL_PRIMARY_HOST=mongodb-primary
       - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=mongodb
       - MONGODB_REPLICA_SET_KEY=replicasetkey
+      - MONGODB_ENABLE_IPV6=true
 
   mongodb-arbiter:
     image: bitnami/mongodb:5.0
@@ -59,3 +61,4 @@ services:
       - MONGODB_INITIAL_PRIMARY_HOST=mongodb-primary
       - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=mongodb
       - MONGODB_REPLICA_SET_KEY=replicasetkey
+      - MONGODB_ENABLE_IPV6=true
