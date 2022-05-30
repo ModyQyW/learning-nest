@@ -24,7 +24,14 @@ export class CoffeesService {
 
   async findByIds(idsDto: IdsDto) {
     const { ids } = idsDto;
-    return this.coffeeModel.find({ _id: { $in: ids } }).exec();
+    const coffees = await this.coffeeModel.find({ _id: { $in: ids } }).exec();
+    if (coffees.length !== ids.length) {
+      const notFoundIds = ids
+        .filter((id) => !coffees.some((coffee) => coffee.id === id))
+        .map((id) => `#${id}`);
+      throw new NotFoundException(`Coffee ${notFoundIds.join(', ')} not found.`);
+    }
+    return coffees;
   }
 
   async findById(idDto: IdDto) {
