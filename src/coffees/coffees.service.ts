@@ -113,6 +113,30 @@ export class CoffeesService {
     return coffee;
   }
 
+  async removeBulk(idsDto: IdsDto) {
+    const { ids } = idsDto;
+    const session = await this.connection.startSession();
+    session.startTransaction();
+    try {
+      const coffees = await Promise.all(
+        ids.map((id) => this.coffeeModel.findByIdAndRemove({ _id: id }, { session }).exec()),
+      );
+      if (coffees.length !== ids.length) {
+        const notFoundIds = ids
+          .filter((id) => !coffees.some((coffee) => coffee?.id === id))
+          .map((id) => `#${id}`);
+        throw new NotFoundException(`Coffee ${notFoundIds.join(', ')} not found.`);
+      }
+      await session.commitTransaction();
+      return coffees;
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
+  }
+
   /**
    * Other actions
    */

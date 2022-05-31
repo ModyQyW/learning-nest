@@ -85,9 +85,19 @@ export class CoffeesController {
    * Delete
    */
 
+  @Delete('/bulk')
+  removeBulk(@Body() idsDto: IdsDto) {
+    return this.coffeeService.removeBulk(idsDto);
+  }
+
   @Delete('/:id')
   remove(@Param() idDto: IdDto) {
     return this.coffeeService.remove(idDto);
+  }
+
+  @Post('/delete/bulk')
+  removeBulkWithPost(@Body() idsDto: IdsDto) {
+    return this.removeBulk(idsDto);
   }
 
   @Post('/:id/delete')
