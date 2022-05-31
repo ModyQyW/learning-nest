@@ -60,38 +60,44 @@ export class CoffeesService {
 
   async update(idDto: IdDto, updateCoffeeDto: UpdateCoffeeDto) {
     const { id } = idDto;
-    const existingCoffee = await this.coffeeModel
+    const coffee = await this.coffeeModel
       .findOneAndUpdate({ _id: id }, { $set: updateCoffeeDto }, { new: true })
       .exec();
-    if (!existingCoffee) {
+    if (!coffee) {
       throw new NotFoundException(`Coffee #${id} not found.`);
     }
-    return existingCoffee;
+    return coffee;
   }
 
   async updateBulk(updateBulkCoffeeDtos: UpdateBulkCoffeeDto[]) {
     const session = await this.connection.startSession();
-    const coffees = await session.withTransaction(async () => {
-      const updatedCoffees = await Promise.all(
+    session.startTransaction();
+    try {
+      const coffees = await Promise.all(
         updateBulkCoffeeDtos.map((updateBulkCoffeeDto) =>
           this.coffeeModel
             .findByIdAndUpdate(
               { _id: updateBulkCoffeeDto.id },
-              { $set: omit(UpdateBulkCoffeeDto, 'id') },
+              { $set: omit(updateBulkCoffeeDto, 'id') },
               { new: true, session },
             )
             .exec(),
         ),
       );
-      if (updatedCoffees.some((item) => !item)) {
-        const ids = updatedCoffees
-          .map((item, index) => (item ? '' : `#${updateBulkCoffeeDtos[index].id}`))
+      if (coffees.some((coffee) => !coffee)) {
+        const notFoundIds = coffees
+          .map((coffee, index) => (coffee ? '' : `#${updateBulkCoffeeDtos[index].id}`))
           .filter(Boolean);
-        throw new NotFoundException(`Coffees ${ids.join(',')} not found.`);
+        throw new NotFoundException(`Coffee ${notFoundIds.join(', ')} not found.`);
       }
-    });
-    session.endSession();
-    return coffees;
+      await session.commitTransaction();
+      return coffees;
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
   }
 
   /**
@@ -100,11 +106,11 @@ export class CoffeesService {
 
   async remove(idDto: IdDto) {
     const { id } = idDto;
-    const removedCoffee = await this.coffeeModel.findOneAndRemove({ _id: id }).exec();
-    if (!removedCoffee) {
+    const coffee = await this.coffeeModel.findOneAndRemove({ _id: id }).exec();
+    if (!coffee) {
       throw new NotFoundException(`Coffee #${id} not found.`);
     }
-    return removedCoffee;
+    return coffee;
   }
 
   /**
