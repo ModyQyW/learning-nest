@@ -62,8 +62,8 @@ export class CoffeesController {
    */
 
   @Patch('/bulk')
-  updateBulk(@Body() UpdateBulkCoffeeDtos: UpdateBulkCoffeeDto[]) {
-    return this.coffeeService.updateBulk(UpdateBulkCoffeeDtos);
+  updateBulk(@Body() updateBulkCoffeeDtos: UpdateBulkCoffeeDto[]) {
+    return this.coffeeService.updateBulk(updateBulkCoffeeDtos);
   }
 
   @Patch('/:id')
@@ -72,8 +72,8 @@ export class CoffeesController {
   }
 
   @Post('/patch/bulk')
-  updateBulkWithPost(@Body() UpdateBulkCoffeeDtos: UpdateBulkCoffeeDto[]) {
-    return this.updateBulk(UpdateBulkCoffeeDtos);
+  updateBulkWithPost(@Body() updateBulkCoffeeDtos: UpdateBulkCoffeeDto[]) {
+    return this.updateBulk(updateBulkCoffeeDtos);
   }
 
   @Post('/:id/patch')
