@@ -1,4 +1,4 @@
-# version: '3'
+version: '3'
 #
 # services:
 #   mongo:
@@ -15,8 +15,6 @@
 #       - 27019:27017
 #     environment:
 #       MONGODB_DATABASE: test-db
-
-version: '2'
 
 services:
   mongodb-primary:
@@ -38,8 +36,10 @@ services:
     restart: always
     depends_on:
       - mongodb-primary
+    expose:
+      - 27017
     ports:
-      - 27018:27017
+      - 27018-27020
     environment:
       - MONGODB_ADVERTISED_HOSTNAME=mongodb-secondary
       - MONGODB_REPLICA_SET_MODE=secondary
@@ -54,7 +54,7 @@ services:
     depends_on:
       - mongodb-primary
     ports:
-      - 27019:27017
+      - 27021:27017
     environment:
       - MONGODB_ADVERTISED_HOSTNAME=mongodb-arbiter
       - MONGODB_REPLICA_SET_MODE=arbiter

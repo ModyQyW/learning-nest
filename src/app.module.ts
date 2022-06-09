@@ -8,7 +8,7 @@ import { CoffeesModule } from './coffees';
     CoffeesModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-      'mongodb://root:mongodb@0.0.0.0:27017,0.0.0.0:27018,0.0.0.0:27019/db?authSource=admin&replicaSet=replicaset',
+      'mongodb://root:mongodb@0.0.0.0:27017,0.0.0.0:27018,0.0.0.0:27019,0.0.0.0:27020,0.0.0.0:27021/db?authSource=admin&replicaSet=replicaset',
     ),
   ],
   controllers: [],
