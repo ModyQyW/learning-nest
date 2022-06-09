@@ -17,7 +17,7 @@ version: '3'
 #       MONGODB_DATABASE: test-db
 
 services:
-  mongodb-primary:
+  test-mongodb-primary:
     image: ${MONGODB_IMAGE_NAME}:${MONGODB_VERSION}
     restart: always
     expose:
@@ -32,14 +32,12 @@ services:
       - MONGODB_REPLICA_SET_KEY=${MONGODB_REPLICA_SET_KEY}
       - MONGODB_REPLICA_SET_MODE=${MONGODB_PRIMARY_REPLICA_SET_MODE}
       - MONGODB_ADVERTISED_HOSTNAME=${MONGODB_PRIMARY_ADVERTISED_HOSTNAME}
-    volumes:
-      - ${MONGODB_PRIMARY_VOLUMES}
 
-  mongodb-secondary:
+  test-mongodb-secondary:
     image: ${MONGODB_IMAGE_NAME}:${MONGODB_VERSION}
     restart: always
     depends_on:
-      - mongodb-primary
+      - test-mongodb-primary
     expose:
       - ${MONGODB_PORT_NUMBER}
     ports:
@@ -54,11 +52,11 @@ services:
       - MONGODB_REPLICA_SET_MODE=${MONGODB_SECONDARY_REPLICA_SET_MODE}
       - MONGODB_ADVERTISED_HOSTNAME=${MONGODB_SECONDARY_ADVERTISED_HOSTNAME}
 
-  mongodb-arbiter:
+  test-mongodb-arbiter:
     image: ${MONGODB_IMAGE_NAME}:${MONGODB_VERSION}
     restart: always
     depends_on:
-      - mongodb-primary
+      - test-mongodb-primary
     expose:
       - ${MONGODB_PORT_NUMBER}
     ports:
