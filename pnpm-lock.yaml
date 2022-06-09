@@ -37,6 +37,7 @@ specifiers:
   '@types/node': latest
   '@types/passport-local': ^1.0.34
   '@types/ramda': ^0.28.14
+  '@types/shelljs': ^0.8.11
   '@types/supertest': ^2.0.12
   '@typescript-eslint/eslint-plugin': ^5.27.1
   '@typescript-eslint/parser': ^5.27.1
@@ -63,12 +64,14 @@ specifiers:
   nestjs-i18n: ^9.1.1
   passport: ^0.6.0
   passport-local: ^1.0.0
+  picocolors: ^1.0.0
   prettier: ^2.6.2
   ramda: ^0.28.0
   redis: ^4.1.0
   reflect-metadata: ^0.1.13
   rimraf: ^3.0.2
   rxjs: ^7.5.5
+  shelljs: ^0.8.5
   source-map-support: ^0.5.21
   supertest: ^6.2.3
   swagger-ui-express: ^4.4.0
@@ -116,6 +119,7 @@ dependencies:
   nestjs-i18n: 9.1.1_nfp2jolc7cbmfttdsnkgdrmyea
   passport: 0.6.0
   passport-local: 1.0.0
+  picocolors: 1.0.0
   ramda: 0.28.0
   redis: 4.1.0
   reflect-metadata: 0.1.13
@@ -144,6 +148,7 @@ devDependencies:
   '@types/node': 17.0.41
   '@types/passport-local': 1.0.34
   '@types/ramda': 0.28.14
+  '@types/shelljs': 0.8.11
   '@types/supertest': 2.0.12
   '@typescript-eslint/eslint-plugin': 5.27.1_aq7uryhocdbvbqum33pitcm3y4
   '@typescript-eslint/parser': 5.27.1_ud6rd4xtew5bv4yhvkvu24pzm4
@@ -155,6 +160,7 @@ devDependencies:
   lint-staged: 13.0.1
   prettier: 2.6.2
   rimraf: 3.0.2
+  shelljs: 0.8.5
   source-map-support: 0.5.21
   supertest: 6.2.3
   ts-jest: 28.0.4_vz6zla63wvofljfl6elifyg77e
@@ -2119,6 +2125,13 @@ packages:
       '@types/node': 17.0.41
     dev: true
 
+  /@types/shelljs/0.8.11:
+    resolution: {integrity: sha512-x9yaMvEh5BEaZKeVQC4vp3l+QoFj3BXcd4aYfuKSzIIyihjdVARAadYy3SMNIz0WCCdS2vB9JL/U6GQk5PaxQw==}
+    dependencies:
+      '@types/glob': 7.2.0
+      '@types/node': 17.0.41
+    dev: true
+
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
     dev: true
@@ -2132,7 +2145,7 @@ packages:
     dev: true
 
   /@types/superagent/4.1.15:
-    resolution: {integrity: sha512-iiXaOL2wSbnSY4qg0mFPWJHL9iwyEsoNYwaHF2w58/fsVAQJlj+KUfFAFZu+nzbz+b7dUprJEAc+O9vhHHhQTA==, tarball: '@types/superagent/-/superagent-4.1.14.tgz'}
+    resolution: {integrity: sha512-iiXaOL2wSbnSY4qg0mFPWJHL9iwyEsoNYwaHF2w58/fsVAQJlj+KUfFAFZu+nzbz+b7dUprJEAc+O9vhHHhQTA==, tarball: '@types/superagent/-/superagent-4.1.15.tgz'}
     deprecated: '[WARNING] Use 4.1.14 instead of 4.1.15, reason: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/58445'
     dependencies:
       '@types/cookiejar': 2.1.2
@@ -7715,7 +7728,6 @@ packages:
 
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
-    dev: true
 
   /picomatch/2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
