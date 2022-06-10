@@ -1,12 +1,6 @@
 # learning-nest
 
-**WIP**
-
-## TODO
-
-- [ ] test
-
-## Usage
+## Develop
 
 Install dependencies.
 
@@ -45,13 +39,13 @@ MONGODB_CONNECTION_STRING=mongodb://root:mongodb@0.0.0.0:27017,0.0.0.0:27018,0.0
 
 ```
 
-Update your hosts.
+Update hosts if using Windows or macOS.
 
 ```hosts
-127.0.0.1 mongodb-primary mongodb-secondary mongodb-arbiter test-mongodb-primary test-mongodb-secondary test-mongodb-arbiter
+127.0.0.1 mongodb-primary mongodb-secondary mongodb-arbiter
 ```
 
-Start `docker-compose` for development.
+Start `docker-compose`.
 
 ```shell
 pnpm run docker # mongodb-primary × 1, mongodb-secondary × 1, mongodb-arbiter × 1
@@ -64,20 +58,23 @@ Start project.
 pnpm run dev
 ```
 
-Build project. Deploy `dist` and start `docker-compose` on your server for production.
+## Deploy
+
+Build project.
 
 ```shell
 pnpm run build
 ```
 
-Start `docker-compose` for test.
+Deploy `dist` and start `docker-compose` on your server manully.
 
-```shell
-pnpm run docker:test
-pnpm run docker-scale:test
-```
+TODO: better deploy. Maybe docker
 
-Set `.env.test` for test.
+## Test
+
+TODO: update tests.
+
+Set `.env.test`.
 
 ```shell
 MONGODB_IMAGE_NAME=bitnami/mongodb
@@ -107,10 +104,24 @@ MONGODB_CONNECTION_STRING=mongodb://root:mongodb@0.0.0.0:28017,0.0.0.0:28018,0.0
 
 ```
 
+Update hosts if using Windows or macOS.
+
+```hosts
+127.0.0.1 test-mongodb-primary test-mongodb-secondary test-mongodb-arbiter
+```
+
+Start `docker-compose`.
+
+```shell
+pnpm run docker:test # test-mongodb-primary × 1, test-mongodb-secondary × 1, test-mongodb-arbiter × 1
+pnpm run docker-scale:test # test-mongodb-primary × 1, test-mongodb-secondary × 3, test-mongodb-arbiter × 1
+```
+
 Test project.
 
 ```shell
 pnpm run test
 pnpm run test:cov
 pnpm run test:e2e
+...
 ```
