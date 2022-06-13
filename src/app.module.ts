@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import Joi from 'joi';
 import { CoffeesModule } from './coffees';
 
 @Module({
@@ -9,6 +10,12 @@ import { CoffeesModule } from './coffees';
       cache: true,
       expandVariables: true,
       isGlobal: true,
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
+        MODE: Joi.string()
+          .valid('development', 'staging', 'production', 'test')
+          .default('development'),
+      }),
     }),
     MongooseModule.forRootAsync({
       useFactory: () => ({
