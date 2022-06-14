@@ -22,7 +22,7 @@ const envFilePathMap: Record<string, string[]> = {
     }),
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        uri: process.env.MONGODB_CONNECTION_STRING ?? 'mongodb://root:root@0.0.0.0',
+        uri: process.env.MONGODB_CONNECTION_STRING || 'mongodb://root:root@0.0.0.0',
       }),
     }),
     CoffeesModule,
