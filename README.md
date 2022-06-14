@@ -1,6 +1,48 @@
 # learning-nest
 
-## Develop
+## Main Dependencies
+
+- [typescript](https://www.typescriptlang.org/) - language
+- [nest](https://nestjs.com/) - developing framework
+- [jest](https://jestjs.io/) - testing framework
+- [docker](https://www.docker.com/) - PaaS
+
+## Env Variables and Modes
+
+### Env Variables
+
+Env variables are exposed on `process.env` object by default. They aren't statically replaced so you can safely destructure.
+
+#### `NODE_ENV` and `MODE`
+
+`NODE_ENV` and `MODE` are two special env variables, set by `cross-env` in this project. You can see them in `package.json` `scripts` field.
+
+`NODE_ENV` is used in compile time to determine how to generate your dist code.
+
+- It has three values: `development`, `production`, and `test`.
+- If you are using `tsc` (default), it has no real effect.
+- If you are using `webpack`, this will be very useful because `webpack` has default configs for different `NODE_ENV`. And that's why `NODE_ENV` is kept in this project. See more [here](https://webpack.js.org/configuration/mode/).
+
+`process.env.MODE` is used in runtime to specify different variables in your code.
+
+- It has four values: `development`, `staging`, `production` and `test`.
+- You can use it to specify different request base urls, etc.
+
+### `.env` Files
+
+`.env` files are used to save security configs which are loaded by `docker` and `@nestjs/config`. You should not commit them.
+
+`.env` is for all `MODE`. `.env.test` is for `MODE === 'test'` and has higher priority. See more conventions [here](https://vitejs.dev/guide/env-and-mode.html#env-files).
+
+To make these files work, you need to specify `--env-file` when using `docker-compose` and `envFilePath` when using `@nestjs/config`.
+
+### `config` Folder
+
+`config` folder contains normal config files for different modes. Specify different variables based on `MODE` here.
+
+## Usage
+
+### Develop
 
 Install dependencies.
 
@@ -58,7 +100,7 @@ Start project.
 pnpm run dev
 ```
 
-## Deploy
+### Deploy
 
 Build project.
 
@@ -70,7 +112,7 @@ Deploy `dist` and start `docker-compose` on your server manully.
 
 TODO: better deploy. Maybe docker
 
-## Test
+### Test
 
 TODO: update tests.
 
